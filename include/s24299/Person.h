@@ -11,9 +11,9 @@ class Person
             name = "John Newman";
         }
 
-        Person(std::string a)
+        Person(std::string Name)
         {
-            name = a;
+            name = Name;
         }
 
         virtual auto to_string() const -> std::string
