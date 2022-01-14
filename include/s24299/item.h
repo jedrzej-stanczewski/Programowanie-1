@@ -19,19 +19,21 @@ class Item
     public:
         std::string name;
 
+        Item() {};
+
         Item(std::string Name)
         {
             name = Name;
         }
 
-        virtual auto use_on(Creature& creature) -> void
-        {
-            creature.healthPoints += 1;
-        }
-
         virtual auto strength() const -> int
         {
             return 0;
+        }
+
+        virtual auto use_on(Creature& creature) -> void
+        {
+            creature.healthPoints += strength();
         }
 };
 
