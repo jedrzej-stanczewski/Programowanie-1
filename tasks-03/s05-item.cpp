@@ -6,7 +6,7 @@ class Weapon : public Item
     public:
         auto use_on(Creature& creature) -> void
         {
-            creature.healthPoints -= 1;
+            creature.healthPoints -= strength();
         }
 };
 
@@ -15,11 +15,11 @@ class Potion : public Item
     public:
         auto use_on(Creature& creature) -> void
         {
-            creature.healthPoints += 1;
+            creature.healthPoints += strength();
         }
 };
 
-class Sword : public Item
+class Sword : public Weapon
 {
     public:
         auto strength() const -> int
@@ -28,7 +28,7 @@ class Sword : public Item
         }
 };
 
-class Axe : public Item
+class Axe : public Weapon
 {
     public:
         auto strength() const -> int
@@ -37,34 +37,50 @@ class Axe : public Item
         }
 };
 
-class Bow : public Item
+class Bow : public Weapon
 {
     public:
-        std::string name;
-
-        Bow(std::string Name)
-        {
-            name = Name;
-        }
         auto strength() const -> int
         {
             return 3;
         }
 };
 
-class Health_potion : public Item
+class Health_potion : public Potion
 {
     public:
-        auto strength() const -> int
-        {
+        int timesUsed = 0;
+        auto strength() const -> int {
             return 5;
+        }
+        auto use_on(Creature& creature) -> void
+        {
+            if (timesUsed < 2) {
+            creature.healthPoints += strength();
+            timesUsed++;
+            };
         }
 };
 
 auto main() -> int
 {   
-    Item item("bow");
-    Bow bow("Bow");
-    std::cout << bow.name << std::endl;
+    Bow bow;
+    Sword sword;
+    Axe axe;
+    Health_potion potion;
+    Creature creature("Balrog", 30);
+    std::cout << creature.healthPoints << std::endl;
+    bow.use_on(creature);
+    std::cout << creature.healthPoints << std::endl;
+    axe.use_on(creature);
+    std::cout << creature.healthPoints << std::endl;
+    potion.use_on(creature);
+    std::cout << creature.healthPoints << std::endl;
+    sword.use_on(creature);
+    std::cout << creature.healthPoints << std::endl;
+    potion.use_on(creature);
+    std::cout << creature.healthPoints << std::endl;
+    potion.use_on(creature);
+    std::cout << creature.healthPoints << std::endl;
     return 0;
 }
